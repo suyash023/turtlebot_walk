@@ -74,6 +74,6 @@ class TurtlebotWalk {
      * @param none
      * @return none
      */
-    void TurtlebotPlanner();
+    geometry_msgs::Twist TurtlebotPlanner();
 };
 #endif  // INCLUDE_TURTLEBOT_WALK_TURTLEBOT_WALK_HPP_
