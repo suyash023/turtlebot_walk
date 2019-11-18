@@ -1,0 +1,4 @@
+<launch>
+	<include file="$(turtlebot_gazebo)/launch/turtlebot_world.launch">
+	</include>
+</launch>
