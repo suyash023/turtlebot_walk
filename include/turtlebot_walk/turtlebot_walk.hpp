@@ -43,6 +43,7 @@
 
 #include <ros/ros.h>
 #include <cv_bridge/cv_bridge.h>
+#include <geometry_msgs/Twist.h>
 #include <opencv2/core/core.hpp>
 
 /*
@@ -53,8 +54,12 @@
 class TurtlebotWalk {
  public:
     bool obstacleDetected = false;
+    float distanceThreshold = 50;
+    float robotLinearVelocity = 0.25;
+    float robotAngularVelocity = 0.25;
     ros::NodeHandle n;
     ros::Subscriber depthImageSubscriber;
+    ros::Publisher velPublisher;
  private:
     /*
      * @brief method to detect obstacles using depth camera
@@ -62,5 +67,13 @@ class TurtlebotWalk {
      * @return none
      */
     void DetectObstacleCallback(const sensor_msgs::ImageConstPtr &msD);
+
+
+    /*
+     * @brief method to make the turtlebot move forward and turn around if obstacle is found
+     * @param none
+     * @return none
+     */
+    void TurtlebotPlanner();
 };
 #endif  // INCLUDE_TURTLEBOT_WALK_TURTLEBOT_WALK_HPP_
