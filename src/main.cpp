@@ -38,6 +38,12 @@
 
 #include "turtlebot_walk.hpp"
 
+/*
+ * @brief main function to execute the walker algorithm
+ * @param argc argv command line arguments
+ * @return int
+ */
+
 int main(int argc, char **argv) {
     ros::init(argc, argv, "walker");
     TurtlebotWalk tbw;
