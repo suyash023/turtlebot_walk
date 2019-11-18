@@ -4,6 +4,6 @@
 	<arg name="world_file" value="$(find turtlebot_gazebo)/worlds/corridor.world"/>
 	</include>
 	<node name="walker1" pkg="turtlebot_walk" type="walk"/>
-	<node pkg="rosbag" type="record" name="rosbag_record_all" args="record -a -o data.bag -x /camera/(.*)" if="$(arg record)" />
+	<node pkg="rosbag" type="record" output="screen" name="rosbag_record_all" args="--all -x /camera/(.*)" if="$(arg record)" />
 
 </launch>
