@@ -41,7 +41,6 @@ rqt_console
 to view the ros messages being passed.
 
 
-```
 ## To record bag files
 
 To record the data published on all topics except camera topic in a bag file pass an argument record:=true to the roslaunch command as follows
