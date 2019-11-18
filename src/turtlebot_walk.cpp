@@ -39,8 +39,38 @@
 
 #include "turtlebot_walk.hpp"
 
-void TurtlebotWalk::DetectObstacleCallback(const ImageConstPtr &msD) {
-
+void TurtlebotWalk::DetectObstacleCallback(const sensor_msgs::
+                                           ImageConstPtr &msD) {
+    cv_bridge::CvImageConstPtr cv_ptrD;
+    cv_ptrD = cv_bridge::toCvShare(msD);
+    for ( int i = 0; i < cv_ptrD->image.rows; i++ ) {
+        for ( int j = 0; j < cv_ptrD->image.cols; j++ ) {
+            if ( cv_ptrD->image.at<ushort>(i, j)
+                    < distanceThreshold ) {
+                obstacleDetected = true;
+                break;
+            }
+        }
+    }
 }
 
+geometry_msgs::Twist TurtlebotWalk::TurtlebotPlanner() {
+    geometry_msgs::Twist velCommand;
+    if ( obstacleDetected ) {
+        velCommand.angular.z = robotAngularVelocity;
+        velCommand.linear.x = 0;
+        velCommand.linear.y = 0;
+        velCommand.linear.z = 0;
+        velCommand.angular.x = 0;
+        velCommand.angular.y = 0;
+    } else {
+        velCommand.angular.z = 0;
+        velCommand.angular.x = 0;
+        velCommand.angular.y = 0;
+        velCommand.linear.x = robotLinearVelocity;
+        velCommand.linear.y = 0;
+        velCommand.linear.z = 0;
+    }
+    return velCommand;
+}
 
