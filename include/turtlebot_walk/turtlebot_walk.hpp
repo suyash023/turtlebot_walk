@@ -54,13 +54,15 @@
 class TurtlebotWalk {
  public:
     bool obstacleDetected = false;
-    float distanceThreshold = 50;
+    float distanceThreshold = 1.5;
     float robotLinearVelocity = 0.25;
-    float robotAngularVelocity = 0.25;
+    float robotAngularVelocity = 0.5;
     ros::NodeHandle n;
     ros::Subscriber depthImageSubscriber;
     ros::Publisher velPublisher;
- private:
+    int direction = 1;
+
+ public:
     /*
      * @brief method to detect obstacles using depth camera
      * @param msD Depth image message
