@@ -36,27 +36,32 @@
  *  @mainpage project page
  */
 
-
+#include <math.h>
 #include "turtlebot_walk.hpp"
 
 void TurtlebotWalk::DetectObstacleCallback(const sensor_msgs::
                                            ImageConstPtr &msD) {
     cv_bridge::CvImageConstPtr cv_ptrD;
     cv_ptrD = cv_bridge::toCvShare(msD);
-    for ( int i = 0; i < cv_ptrD->image.rows; i++ ) {
+    float avg_dist = 0;
+    float r = cv_ptrD->image.rows;
+    float c = cv_ptrD->image.cols;
+    //for ( int i = 0; i < cv_ptrD->image.rows; i++ ) {
         for ( int j = 0; j < cv_ptrD->image.cols; j++ ) {
-            if ( cv_ptrD->image.at<ushort>(i, j)
-                    < distanceThreshold ) {
-                obstacleDetected = true;
-                break;
+               avg_dist += cv_ptrD->image.at<float>(r/2, j);
             }
-        }
+    avg_dist = avg_dist/(c);
+    ROS_INFO_STREAM("AVERAGE DISTANCE IS: " << avg_dist);
+    if ( avg_dist < distanceThreshold || std::isnan(avg_dist) ) {
+        obstacleDetected = true;
+    } else {
+        obstacleDetected = false;
     }
 }
 
 geometry_msgs::Twist TurtlebotWalk::TurtlebotPlanner() {
     geometry_msgs::Twist velCommand;
-    if ( obstacleDetected ) {
+     if ( obstacleDetected ) {
         velCommand.angular.z = robotAngularVelocity;
         velCommand.linear.x = 0;
         velCommand.linear.y = 0;
